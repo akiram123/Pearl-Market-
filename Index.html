@@ -1,0 +1,28 @@
+import { useState, useEffect } from 'react'
+import { supabase } from './supabaseClient'
+
+function ProductList() {
+  const [products, setProducts] = useState([])
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const { data } = await supabase.from('products').select('*')
+      setProducts(data)
+    }
+    fetchProducts()
+  }, [])
+
+  return (
+    <div className="grid-container">
+      {products.map(p => (
+        <div key={p.id} className="card">
+          <h3>{p.title}</h3>
+          <p>{p.description}</p>
+          <span>UGX {p.price}</span>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+export default ProductList;
